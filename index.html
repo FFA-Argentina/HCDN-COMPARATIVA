@@ -512,6 +512,55 @@ body.dark  #cmp-empty p{color:#4A6890}
 body.light #cmp-nores{color:#5570A0}
 body.dark  #cmp-nores{color:#4A6890}
 
+/* ── BLOQUES COMPARATIVA ─────────────────────────────── */
+#cmp-blq-btn{width:100%;padding:8px;border-radius:7px;font-size:11px;font-weight:800;
+  letter-spacing:.8px;cursor:pointer;border:none;transition:background .15s;margin-top:4px}
+body.light #cmp-blq-btn{background:#003AAA;color:#fff}
+body.dark  #cmp-blq-btn{background:#1A4FAA;color:#D8E4F4}
+body.light #cmp-blq-btn:hover{background:#002880}
+body.dark  #cmp-blq-btn:hover{background:#2460CC}
+#cmp-blq-btn:disabled{opacity:.4;cursor:not-allowed}
+
+.blq-row{padding:10px 18px;border-bottom:1px solid transparent;cursor:pointer;transition:background .12s}
+body.light .blq-row{border-bottom-color:#EEF2FA}
+body.dark  .blq-row{border-bottom-color:#0E1A2E}
+body.light .blq-row:hover{background:#EEF4FF}
+body.dark  .blq-row:hover{background:#0D1E38}
+.blq-row-tit{font-size:10.5px;font-weight:600;line-height:1.35;margin-bottom:2px}
+body.light .blq-row-tit{color:#1A2A50}
+body.dark  .blq-row-tit{color:#B8CCEC}
+.blq-row-meta{font-size:9px;margin-bottom:5px}
+body.light .blq-row-meta{color:#8899BB}
+body.dark  .blq-row-meta{color:#2E4060}
+.blq-bar-wrap{margin-bottom:5px}
+.blq-bar-label{font-size:8px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;
+  margin-bottom:2px;display:flex;justify-content:space-between;align-items:center;opacity:.7}
+.blq-bar{display:flex;height:10px;border-radius:5px;overflow:hidden;width:100%;gap:1px}
+.blq-bar-seg{height:100%;min-width:2px;transition:width .3s ease}
+.blq-bar-seg:first-child{border-radius:5px 0 0 5px}
+.blq-bar-seg:last-child{border-radius:0 5px 5px 0}
+.blq-bar-seg:only-child{border-radius:5px}
+.blq-bar-empty{height:10px;border-radius:5px;opacity:.15}
+body.light .blq-bar-empty{background:#A0B2C8}
+body.dark  .blq-bar-empty{background:#1E3050}
+.blq-sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 18px 4px}
+.blq-sum-card{border-radius:8px;padding:10px 12px}
+body.light .blq-sum-card{background:#EEF2FA;border:1px solid #C8D4E6}
+body.dark  .blq-sum-card{background:#0E1A2E;border:1px solid #1A2B40}
+.blq-sum-name{font-size:10px;font-weight:800;margin-bottom:6px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.light .blq-sum-name{color:#1A2A50}
+body.dark  .blq-sum-name{color:#B8CCEC}
+.blq-sum-bar{height:8px;border-radius:4px;overflow:hidden;display:flex;gap:1px;margin-bottom:4px}
+.blq-sum-stat{font-size:8.5px;font-weight:700;display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}
+.blq-divider{height:1px;margin:8px 18px 0}
+body.light .blq-divider{background:#EEF2FA}
+body.dark  .blq-divider{background:#152338}
+.blq-count-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;
+  display:inline-block;margin:6px 18px 2px}
+body.light .blq-count-badge{background:#E8EFFE;color:#003AAA}
+body.dark  .blq-count-badge{background:#0C1828;color:#6A9EFF}
+
 /* Botón comparar en header */
 #cmp-open-btn{
   display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px;
@@ -890,23 +939,46 @@ body.dark  .ac-item-name{color:#B8CCEC}
         <circle cx="9.5" cy="6.5" r="2.5" stroke="currentColor" stroke-width="1.3" fill="none"/>
         <path d="M6 6.5h1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
       </svg>
-      Comparar Diputados
+      Comparar
     </div>
-    <div class="cmp-sel-row">
-      <span class="cmp-sel-lbl a">A</span>
-      <div class="cmp-sel-wrap">
-        <input id="cmp-inp-a" class="cmp-sel-input" placeholder="Diputado/a A…" autocomplete="off"/>
-        <div class="cmp-ac-list" id="cmp-ac-a"></div>
+    <div id="cmp-mode-tabs" style="display:flex;gap:4px;margin-bottom:10px">
+      <button class="stab active" id="cmptab-dip" onclick="setCmpMode('dip')">Diputados</button>
+      <button class="stab" id="cmptab-bloque" onclick="setCmpMode('bloque')">Bloques</button>
+    </div>
+    <div id="cmp-dip-form">
+      <div class="cmp-sel-row">
+        <span class="cmp-sel-lbl a">A</span>
+        <div class="cmp-sel-wrap">
+          <input id="cmp-inp-a" class="cmp-sel-input" placeholder="Diputado/a A&hellip;" autocomplete="off"/>
+          <div class="cmp-ac-list" id="cmp-ac-a"></div>
+        </div>
       </div>
-    </div>
-    <div class="cmp-sel-row">
-      <span class="cmp-sel-lbl b">B</span>
-      <div class="cmp-sel-wrap">
-        <input id="cmp-inp-b" class="cmp-sel-input" placeholder="Diputado/a B…" autocomplete="off"/>
-        <div class="cmp-ac-list" id="cmp-ac-b"></div>
+      <div class="cmp-sel-row">
+        <span class="cmp-sel-lbl b">B</span>
+        <div class="cmp-sel-wrap">
+          <input id="cmp-inp-b" class="cmp-sel-input" placeholder="Diputado/a B&hellip;" autocomplete="off"/>
+          <div class="cmp-ac-list" id="cmp-ac-b"></div>
+        </div>
       </div>
+      <button id="cmp-btn" onclick="runComparison()" disabled>Comparar votaciones</button>
     </div>
-    <button id="cmp-btn" onclick="runComparison()" disabled>Comparar votaciones</button>
+    <div id="cmp-bloque-form" style="display:none">
+      <div class="cmp-sel-row">
+        <span class="cmp-sel-lbl a">A</span>
+        <div class="cmp-sel-wrap">
+          <input id="cmp-blq-a" class="cmp-sel-input" placeholder="Bloque A&hellip;" autocomplete="off"/>
+          <div class="cmp-ac-list" id="cmp-blqac-a"></div>
+        </div>
+      </div>
+      <div class="cmp-sel-row">
+        <span class="cmp-sel-lbl b">B</span>
+        <div class="cmp-sel-wrap">
+          <input id="cmp-blq-b" class="cmp-sel-input" placeholder="Bloque B&hellip;" autocomplete="off"/>
+          <div class="cmp-ac-list" id="cmp-blqac-b"></div>
+        </div>
+      </div>
+      <button id="cmp-blq-btn" onclick="runBloqueComparison()" disabled>Comparar bloques</button>
+    </div>
   </div>
   <div id="cmp-body">
     <div id="cmp-empty">
@@ -915,17 +987,22 @@ body.dark  .ac-item-name{color:#B8CCEC}
         <circle cx="28" cy="20" r="8" stroke="currentColor" stroke-width="1.3" fill="none" stroke-dasharray="3 2"/>
         <path d="M17 20h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
       </svg>
-      <p>Seleccioná dos diputados para ver su historial de votos comparado acta por acta</p>
+      <p>Seleccioná dos diputados o bloques para comparar su historial de votos</p>
     </div>
     <div id="cmp-results" style="display:none">
       <div id="cmp-summary"></div>
       <div id="cmp-filter-bar">
         <button class="cmp-fbtn cmp-factive" data-f="all" onclick="setCmpFilter('all')">Todas</button>
-        <button class="cmp-fbtn" data-f="agree" onclick="setCmpFilter('agree')">✓ Coinciden</button>
-        <button class="cmp-fbtn" data-f="diff" onclick="setCmpFilter('diff')">✗ Difieren</button>
+        <button class="cmp-fbtn" data-f="agree" onclick="setCmpFilter('agree')">&#10003; Coinciden</button>
+        <button class="cmp-fbtn" data-f="diff" onclick="setCmpFilter('diff')">&#10007; Difieren</button>
       </div>
       <div id="cmp-table-wrap"></div>
       <div id="cmp-nores">No hay actas para este filtro</div>
+    </div>
+    <div id="blq-results" style="display:none">
+      <div id="blq-summary"></div>
+      <div id="blq-table-wrap"></div>
+      <div id="blq-nores" style="display:none;padding:20px;text-align:center;font-size:11px">Sin actas en com&#250;n</div>
     </div>
   </div>
 </div>
@@ -1737,7 +1814,10 @@ function setupCmpAC(inputId, listId, slot){
     const norm=normalizeDip(q);
     if(!norm){list.style.display='none';return;}
     const matches=Object.values(getDipIdx())
-      .filter(d=>normalizeDip(d.canonical).includes(norm))
+      .filter(d=>{
+        const apellido=normalizeDip(d.canonical.split(',')[0]);
+        return apellido.startsWith(norm);
+      })
       .map(d=>d.canonical).slice(0,20);
     if(!matches.length){list.style.display='none';return;}
     list.innerHTML='';
@@ -1786,6 +1866,22 @@ function updateCmpBtn(){
   document.getElementById('cmp-btn').disabled=!(cmpSelA&&cmpSelB&&cmpSelA!==cmpSelB);
 }
 
+// ── Modo (diputados / bloques) ──────────────────────────
+let cmpMode='dip';
+let blqSelA='', blqSelB='';
+
+function setCmpMode(mode){
+  cmpMode=mode;
+  document.getElementById('cmptab-dip').classList.toggle('active',mode==='dip');
+  document.getElementById('cmptab-bloque').classList.toggle('active',mode==='bloque');
+  document.getElementById('cmp-dip-form').style.display=mode==='dip'?'block':'none';
+  document.getElementById('cmp-bloque-form').style.display=mode==='bloque'?'block':'none';
+  document.getElementById('cmp-results').style.display='none';
+  document.getElementById('blq-results').style.display='none';
+  document.getElementById('cmp-empty').style.display='flex';
+  if(mode==='bloque') setupBloqueAC();
+}
+
 function openCmp(){
   setupCmpAC('cmp-inp-a','cmp-ac-a','a');
   setupCmpAC('cmp-inp-b','cmp-ac-b','b');
@@ -1799,6 +1895,178 @@ function closeCmp(){
   p.classList.remove('open');
   document.body.classList.remove('cmp-open');
   setTimeout(()=>{if(!p.classList.contains('open'))p.style.display='none';},300);
+}
+
+// ── Bloque autocomplete ─────────────────────────────────
+function allBloques(){
+  const set=new Set();
+  Object.values(VOTE_DB).forEach(votes=>{
+    if(votes) votes.forEach(v=>{if(v[1]) set.add(v[1]);});
+  });
+  return [...set].sort((a,b)=>a.localeCompare(b,'es'));
+}
+
+let _bloqueACSetup=false;
+function setupBloqueAC(){
+  if(_bloqueACSetup) return;
+  _bloqueACSetup=true;
+  setupGenericAC('cmp-blq-a','cmp-blqac-a','bA');
+  setupGenericAC('cmp-blq-b','cmp-blqac-b','bB');
+}
+
+function setupGenericAC(inputId, listId, slot){
+  const inp=document.getElementById(inputId);
+  const list=document.getElementById(listId);
+  const bloques=allBloques();
+
+  function render(q){
+    const norm=(q||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+    list.innerHTML='';
+    if(!norm){list.style.display='none';return;}
+    const matches=bloques.filter(b=>
+      b.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').startsWith(norm)
+    ).slice(0,20);
+    if(!matches.length){list.style.display='none';return;}
+    matches.forEach(name=>{
+      const div=document.createElement('div');
+      div.className='cmp-ac-item';
+      div.textContent=(BS&&BS[name]?BS[name]+' — ':'')+name;
+      div.addEventListener('mousedown',e=>{
+        e.preventDefault();
+        inp.value=name;
+        if(slot==='bA') blqSelA=name;
+        else blqSelB=name;
+        list.style.display='none';
+        updateBlqBtn();
+      });
+      list.appendChild(div);
+    });
+    list.style.display='block';
+  }
+
+  inp.addEventListener('input',()=>{
+    render(inp.value);
+    if(slot==='bA') blqSelA=''; else blqSelB='';
+    updateBlqBtn();
+  });
+  inp.addEventListener('blur',()=>setTimeout(()=>{list.style.display='none';},150));
+  inp.addEventListener('keydown',e=>{
+    if(e.key==='Escape') list.style.display='none';
+  });
+}
+
+function updateBlqBtn(){
+  document.getElementById('cmp-blq-btn').disabled=!(blqSelA&&blqSelB&&blqSelA!==blqSelB);
+}
+
+// ── Bloque comparison logic ─────────────────────────────
+const VOTE_ORDER=['AFIRMATIVO','NEGATIVO','ABSTENCION','AUSENTE'];
+const VOTE_COLORS={AFIRMATIVO:'#16a34a',NEGATIVO:'#dc2626',ABSTENCION:'#2563eb',AUSENTE:'#71717a'};
+const VOTE_SHORT={AFIRMATIVO:'Afirm.',NEGATIVO:'Neg.',ABSTENCION:'Abst.',AUSENTE:'Aus.'};
+
+function buildBloqueVotes(bloqueName){
+  // returns map: actaId -> {aff, neg, abs, aus, total}
+  const map={};
+  Object.entries(VOTE_DB).forEach(([id,votes])=>{
+    if(!votes) return;
+    const cnt={AFIRMATIVO:0,NEGATIVO:0,ABSTENCION:0,AUSENTE:0,total:0};
+    votes.forEach(v=>{
+      if(v[1]===bloqueName && cnt[v[3]]!==undefined){
+        cnt[v[3]]++;cnt.total++;
+      }
+    });
+    if(cnt.total>0) map[+id]=cnt;
+  });
+  return map;
+}
+
+function makeBloqueBar(cnt){
+  if(!cnt||cnt.total===0) return '<div class="blq-bar"><div class="blq-bar-empty" style="width:100%"></div></div>';
+  return '<div class="blq-bar">'+
+    VOTE_ORDER.map(v=>{
+      const pct=(cnt[v]/cnt.total*100);
+      if(pct<0.5) return '';
+      return `<div class="blq-bar-seg" style="width:${pct.toFixed(1)}%;background:${VOTE_COLORS[v]}" title="${VOTE_SHORT[v]}: ${cnt[v]}"></div>`;
+    }).join('')+
+  '</div>';
+}
+
+function makeBloqueBarLabel(cnt, bloqueName){
+  if(!cnt||cnt.total===0) return `<span>${bloqueName||''}</span><span style="opacity:.5">sin datos</span>`;
+  const dom=VOTE_ORDER.reduce((mx,v)=>cnt[v]>cnt[mx]?v:mx,'AFIRMATIVO');
+  return `<span style="color:${VOTE_COLORS[dom]}">${(BS&&BS[bloqueName])||bloqueName}</span>`+
+    `<span style="font-size:8px;font-weight:600;opacity:.55">${cnt.total} miembros</span>`;
+}
+
+function runBloqueComparison(){
+  const mapA=buildBloqueVotes(blqSelA);
+  const mapB=buildBloqueVotes(blqSelB);
+  const commonIds=Object.keys(mapA).filter(id=>mapB[id]).map(Number);
+  if(!commonIds.length){
+    document.getElementById('cmp-empty').style.display='flex';
+    document.getElementById('blq-results').style.display='none';
+    document.getElementById('blq-nores').style.display='block';
+    return;
+  }
+
+  // Sort by date desc
+  const rows=commonIds.map(id=>{
+    const acta=ACTAS_INDEX.find(x=>x[0]===id);
+    return {id,acta,cntA:mapA[id],cntB:mapB[id]};
+  }).sort((x,y)=>{
+    const da=(x.acta&&x.acta[2])||'',db=(y.acta&&y.acta[2])||'';
+    return da<db?1:da>db?-1:0;
+  });
+
+  // Global aggregate for summary
+  const totA={AFIRMATIVO:0,NEGATIVO:0,ABSTENCION:0,AUSENTE:0,total:0};
+  const totB={AFIRMATIVO:0,NEGATIVO:0,ABSTENCION:0,AUSENTE:0,total:0};
+  rows.forEach(r=>{
+    VOTE_ORDER.forEach(v=>{totA[v]+=r.cntA[v];totB[v]+=r.cntB[v];});
+    totA.total+=r.cntA.total;totB.total+=r.cntB.total;
+  });
+
+  const nameA=(BS&&BS[blqSelA])||blqSelA;
+  const nameB=(BS&&BS[blqSelB])||blqSelB;
+
+  // Render summary cards
+  function sumCard(name,tot){
+    return `<div class="blq-sum-card">
+      <div class="blq-sum-name">${name}</div>
+      <div class="blq-sum-bar">${makeBloqueBar(tot)}</div>
+      <div class="blq-sum-stat">${VOTE_ORDER.map(v=>`<span style="color:${VOTE_COLORS[v]};font-size:8.5px">${VOTE_SHORT[v]} ${tot.total?Math.round(tot[v]/tot.total*100):0}%</span>`).join('')}</div>
+    </div>`;
+  }
+
+  document.getElementById('blq-summary').innerHTML=
+    `<div class="blq-sum-grid">${sumCard(nameA,totA)}${sumCard(nameB,totB)}</div>`+
+    `<div class="blq-divider"></div>`+
+    `<span class="blq-count-badge">${rows.length} actas en com&#250;n</span>`;
+
+  // Render rows
+  const MESES_S=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const wrap=document.getElementById('blq-table-wrap');
+  wrap.innerHTML='';
+  rows.forEach(r=>{
+    const a=r.acta;
+    const tit=(a&&a[4])||'Sin t&#237;tulo';
+    const fecha=a&&a[2]?(f=>{const p=f.split('-');return p[2]+' '+MESES_S[+p[1]-1]+' '+p[0]})(a[2]):'&#8212;';
+    const num=a?'N&#176; '+a[1]:'';
+    const div=document.createElement('div');
+    div.className='blq-row';
+    div.innerHTML=
+      `<div class="blq-row-tit">${tit}</div>`+
+      `<div class="blq-row-meta">${num}${num&&fecha?' &middot; ':''}${fecha}</div>`+
+      `<div class="blq-bar-wrap"><div class="blq-bar-label">${makeBloqueBarLabel(r.cntA,blqSelA)}</div>${makeBloqueBar(r.cntA)}</div>`+
+      `<div class="blq-bar-wrap"><div class="blq-bar-label">${makeBloqueBarLabel(r.cntB,blqSelB)}</div>${makeBloqueBar(r.cntB)}</div>`;
+    div.addEventListener('click',()=>{loadActa(r.id);closeCmp();});
+    wrap.appendChild(div);
+  });
+
+  document.getElementById('cmp-empty').style.display='none';
+  document.getElementById('cmp-results').style.display='none';
+  document.getElementById('blq-nores').style.display='none';
+  document.getElementById('blq-results').style.display='block';
 }
 
 // Swipe para cerrar en mobile
