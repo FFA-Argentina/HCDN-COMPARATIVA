@@ -630,6 +630,8 @@ body.dark  #cmp-sticky,body.dark  #blq-sticky{background:#0B1628;border-bottom:1
   #cmp-panel.open{transform:translateY(0)!important}
   /* evitar zoom en inputs dentro del panel en iOS */
   #cmp-panel input,#cmp-panel select{font-size:16px!important}
+  /* botón comparar: va al final del header (después del toggle) */
+  #cmp-open-btn{order:10;margin-left:2px}
 }
 
 /* ── ZOOM CONTROL ────────────────────────────────────────── */
@@ -1047,14 +1049,14 @@ body.dark  .ac-item-name{color:#B8CCEC}
     <div id="cmp-results" style="display:none">
       <div id="cmp-sticky">
         <div id="cmp-summary"></div>
-        <div id="cmp-search-bar">
-          <input id="cmp-search-inp" class="cmp-sel-input" placeholder="&#128269; Buscar por t&#237;tulo&#8230;" autocomplete="off" oninput="renderCmpRows()">
-        </div>
         <div id="cmp-filter-bar">
           <button class="cmp-fbtn cmp-factive" data-f="all" onclick="setCmpFilter('all')">Todas</button>
           <button class="cmp-fbtn" data-f="agree" onclick="setCmpFilter('agree')">&#10003; Coinciden</button>
           <button class="cmp-fbtn" data-f="diff" onclick="setCmpFilter('diff')">&#10007; Difieren</button>
         </div>
+      </div>
+      <div id="cmp-search-bar">
+        <input id="cmp-search-inp" class="cmp-sel-input" placeholder="&#128269; Buscar por t&#237;tulo&#8230;" autocomplete="off" oninput="renderCmpRows()">
       </div>
       <div id="cmp-table-wrap"></div>
       <div id="cmp-nores">No hay actas para este filtro</div>
@@ -1062,9 +1064,9 @@ body.dark  .ac-item-name{color:#B8CCEC}
     <div id="blq-results" style="display:none">
       <div id="blq-sticky">
         <div id="blq-summary"></div>
-        <div id="blq-search-bar">
-          <input id="blq-search-inp" class="cmp-sel-input" placeholder="&#128269; Buscar por t&#237;tulo&#8230;" autocomplete="off" oninput="renderBloqueRows()">
-        </div>
+      </div>
+      <div id="blq-search-bar">
+        <input id="blq-search-inp" class="cmp-sel-input" placeholder="&#128269; Buscar por t&#237;tulo&#8230;" autocomplete="off" oninput="renderBloqueRows()">
       </div>
       <div id="blq-table-wrap"></div>
       <div id="blq-nores" style="display:none;padding:20px;text-align:center;font-size:11px">Sin actas en com&#250;n</div>
