@@ -41,8 +41,10 @@ body.dark {background:#07101E;color:#D8E4F4}
 
 /* ── HEADER ──────────────────────────────────────── */
 #header{position:fixed;top:0;left:0;right:0;z-index:500;height:54px;
-  background:#fff;display:flex;align-items:center;padding:0 16px;gap:10px;
+  background:#fff;display:flex;align-items:center;padding:0 10px;gap:0;
   box-shadow:0 2px 8px rgba(0,0,0,.08);border-bottom:1px solid #e0e6f0}
+#header-left{display:flex;align-items:center;gap:8px;flex:1;min-width:0;overflow:hidden}
+#header-right{display:flex;align-items:center;gap:6px;flex:1;justify-content:flex-end}
 body.dark #header{background:#0B1628;border-bottom-color:#1A2B40}
 #header-logo{height:34px;width:auto;flex-shrink:0;object-fit:contain}
 #header-text{flex:1;min-width:0}
@@ -457,7 +459,7 @@ body.dark  #cmp-btn{background:#1A4FAA;color:#D8E4F4}
 body.light #cmp-btn:hover{background:#002880}
 body.dark  #cmp-btn:hover{background:#2460CC}
 #cmp-btn:disabled{opacity:.4;cursor:not-allowed}
-#cmp-body{flex:1;overflow-y:auto;padding:0 0 14px;min-height:0}
+#cmp-body{flex:1;overflow-y:auto;padding:0 0 14px;min-height:0;position:relative}
 #cmp-body::-webkit-scrollbar{width:4px}
 body.light #cmp-body::-webkit-scrollbar-thumb{background:#C8D4E6}
 body.dark  #cmp-body::-webkit-scrollbar-thumb{background:#1E3050}
@@ -597,24 +599,37 @@ body.dark  #cmp-mode-track.blq-active .cmp-mode-lbl-left{color:#607898}
 body.light #cmp-mode-track.blq-active .cmp-mode-lbl-right{color:#003AAA}
 body.dark  #cmp-mode-track.blq-active .cmp-mode-lbl-right{color:#7AABFF}
 
-/* Botón comparar en header */
+/* Botón comparar en header — centrado */
 #cmp-open-btn{
-  display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:6px;
-  font-size:10px;font-weight:700;letter-spacing:.4px;cursor:pointer;
-  border:none;flex-shrink:0;transition:background .13s;margin-right:4px;
+  display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:8px;
+  font-size:11px;font-weight:800;letter-spacing:.5px;cursor:pointer;
+  flex-shrink:0;transition:background .15s,box-shadow .15s;
+  box-shadow:0 1px 6px rgba(0,20,80,.12);
 }
 body.light #cmp-open-btn{background:#EEF2FA;color:#003AAA;border:1px solid #C0D0E4}
 body.dark  #cmp-open-btn{background:#101F38;color:#7AABFF;border:1px solid #1C2E48}
 body.light #cmp-open-btn:hover{background:#D8E8FF}
 body.dark  #cmp-open-btn:hover{background:#142040}
 
+/* sticky zones */
+#cmp-sticky,#blq-sticky{
+  position:sticky;top:0;z-index:10;
+  padding-bottom:4px;
+}
+body.light #cmp-sticky,body.light #blq-sticky{background:#fff;border-bottom:1px solid #EEF2FA}
+body.dark  #cmp-sticky,body.dark  #blq-sticky{background:#0B1628;border-bottom:1px solid #152338}
+#cmp-search-bar,#blq-search-bar{padding:6px 18px 2px}
+#cmp-search-bar .cmp-sel-input,#blq-search-bar .cmp-sel-input{width:100%;font-size:11.5px}
+
 @media(max-width:720px){
   #cmp-panel{width:100%!important;right:0!important;
-    top:auto!important;bottom:0!important;height:80vh;min-height:300px;
+    top:0!important;bottom:0!important;height:100%!important;min-height:unset!important;
     transform:translateY(110%)!important;border-left:none!important;
-    border-top:1px solid #C8D4E6;border-radius:16px 16px 0 0}
+    border-top:none!important;border-radius:0!important}
   body.dark #cmp-panel{border-top-color:#1A2B40}
   #cmp-panel.open{transform:translateY(0)!important}
+  /* evitar zoom en inputs dentro del panel en iOS */
+  #cmp-panel input,#cmp-panel select{font-size:16px!important}
 }
 
 /* ── ZOOM CONTROL ────────────────────────────────────────── */
@@ -699,24 +714,19 @@ body.dark  .ac-item-name{color:#B8CCEC}
 
 <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 <header id="header">
-  <button id="menu-btn" onclick="toggleSidebar()" aria-label="Menú">
-    <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
-      <rect y="0" width="18" height="2.2" rx="1.1" fill="currentColor"/>
-      <rect y="5.9" width="18" height="2.2" rx="1.1" fill="currentColor"/>
-      <rect y="11.8" width="18" height="2.2" rx="1.1" fill="currentColor"/>
-    </svg>
-  </button>
-  <img src="imagen_1.jpg" alt="HCDN Logo" id="header-logo">
-  <div id="header-text">
-    <div id="header-sub">H. Cámara de Diputados · República Argentina</div>
-    <div id="header-title">Votaciones Nominales · Panel Analítico</div>
-  </div>
-  <div id="header-author">
-    <div id="author-text">
-      <div id="author-label">Elaborado por</div>
-      <b>Fernando FASCIE</b>
+  <div id="header-left">
+    <button id="menu-btn" onclick="toggleSidebar()" aria-label="Menú">
+      <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+        <rect y="0" width="18" height="2.2" rx="1.1" fill="currentColor"/>
+        <rect y="5.9" width="18" height="2.2" rx="1.1" fill="currentColor"/>
+        <rect y="11.8" width="18" height="2.2" rx="1.1" fill="currentColor"/>
+      </svg>
+    </button>
+    <img src="imagen_1.jpg" alt="HCDN Logo" id="header-logo">
+    <div id="header-text">
+      <div id="header-sub">H. Cámara de Diputados · República Argentina</div>
+      <div id="header-title">Votaciones Nominales · Panel Analítico</div>
     </div>
-    <img id="ffa-logo" src="imagen_2.png" alt="FF+A">
   </div>
   <button id="cmp-open-btn" onclick="openCmp()" title="Comparar diputados o bloques">
     <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
@@ -725,14 +735,23 @@ body.dark  .ac-item-name{color:#B8CCEC}
     </svg>
     Comparar
   </button>
-  <div id="toggle-wrap">
-    <span id="toggle-label">Diurno</span>
-    <button id="toggle" aria-label="Modo oscuro">
-      <div id="toggle-knob">
-        <svg id="sun-icon" width="9" height="9" viewBox="0 0 9 9"><circle cx="4.5" cy="4.5" r="2" fill="#5570A0"/><path d="M4.5.3V1.8M4.5 7.2V8.7M.3 4.5H1.8M7.2 4.5H8.7M1.4 1.4l1.1 1.1M6.5 6.5l1.1 1.1M1.4 7.6l1.1-1.1M6.5 2.5l1.1-1.1" stroke="#5570A0" stroke-width=".85" stroke-linecap="round"/></svg>
-        <svg id="moon-icon" width="9" height="9" viewBox="0 0 9 9" style="display:none"><path d="M7.5 5A3 3 0 014.5 2a2.7 2.7 0 100 5.4A3 3 0 017.5 5z" fill="#0A1E3D"/></svg>
+  <div id="header-right">
+    <div id="header-author">
+      <div id="author-text">
+        <div id="author-label">Elaborado por</div>
+        <b>Fernando FASCIE</b>
       </div>
-    </button>
+      <img id="ffa-logo" src="imagen_2.png" alt="FF+A">
+    </div>
+    <div id="toggle-wrap">
+      <span id="toggle-label">Diurno</span>
+      <button id="toggle" aria-label="Modo oscuro">
+        <div id="toggle-knob">
+          <svg id="sun-icon" width="9" height="9" viewBox="0 0 9 9"><circle cx="4.5" cy="4.5" r="2" fill="#5570A0"/><path d="M4.5.3V1.8M4.5 7.2V8.7M.3 4.5H1.8M7.2 4.5H8.7M1.4 1.4l1.1 1.1M6.5 6.5l1.1 1.1M1.4 7.6l1.1-1.1M6.5 2.5l1.1-1.1" stroke="#5570A0" stroke-width=".85" stroke-linecap="round"/></svg>
+          <svg id="moon-icon" width="9" height="9" viewBox="0 0 9 9" style="display:none"><path d="M7.5 5A3 3 0 014.5 2a2.7 2.7 0 100 5.4A3 3 0 017.5 5z" fill="#0A1E3D"/></svg>
+        </div>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -1026,17 +1045,27 @@ body.dark  .ac-item-name{color:#B8CCEC}
       <p>Seleccioná dos diputados o bloques para comparar su historial de votos</p>
     </div>
     <div id="cmp-results" style="display:none">
-      <div id="cmp-summary"></div>
-      <div id="cmp-filter-bar">
-        <button class="cmp-fbtn cmp-factive" data-f="all" onclick="setCmpFilter('all')">Todas</button>
-        <button class="cmp-fbtn" data-f="agree" onclick="setCmpFilter('agree')">&#10003; Coinciden</button>
-        <button class="cmp-fbtn" data-f="diff" onclick="setCmpFilter('diff')">&#10007; Difieren</button>
+      <div id="cmp-sticky">
+        <div id="cmp-summary"></div>
+        <div id="cmp-search-bar">
+          <input id="cmp-search-inp" class="cmp-sel-input" placeholder="&#128269; Buscar por t&#237;tulo&#8230;" autocomplete="off" oninput="renderCmpRows()">
+        </div>
+        <div id="cmp-filter-bar">
+          <button class="cmp-fbtn cmp-factive" data-f="all" onclick="setCmpFilter('all')">Todas</button>
+          <button class="cmp-fbtn" data-f="agree" onclick="setCmpFilter('agree')">&#10003; Coinciden</button>
+          <button class="cmp-fbtn" data-f="diff" onclick="setCmpFilter('diff')">&#10007; Difieren</button>
+        </div>
       </div>
       <div id="cmp-table-wrap"></div>
       <div id="cmp-nores">No hay actas para este filtro</div>
     </div>
     <div id="blq-results" style="display:none">
-      <div id="blq-summary"></div>
+      <div id="blq-sticky">
+        <div id="blq-summary"></div>
+        <div id="blq-search-bar">
+          <input id="blq-search-inp" class="cmp-sel-input" placeholder="&#128269; Buscar por t&#237;tulo&#8230;" autocomplete="off" oninput="renderBloqueRows()">
+        </div>
+      </div>
       <div id="blq-table-wrap"></div>
       <div id="blq-nores" style="display:none;padding:20px;text-align:center;font-size:11px">Sin actas en com&#250;n</div>
     </div>
@@ -2021,19 +2050,22 @@ function runBloqueComparison(){
     return;
   }
 
-  // Sort by date desc
-  const rows=commonIds.map(id=>{
+  // Sort: acta activa primero, luego cronológico desc
+  let blqRows=commonIds.map(id=>{
     const acta=ACTAS_INDEX.find(x=>x[0]===id);
     return {id,acta,cntA:mapA[id],cntB:mapB[id]};
   }).sort((x,y)=>{
+    if(x.id===activeActaId) return -1;
+    if(y.id===activeActaId) return 1;
     const da=(x.acta&&x.acta[2])||'',db=(y.acta&&y.acta[2])||'';
     return da<db?1:da>db?-1:0;
   });
+  window._blqRows=blqRows;
 
   // Global aggregate for summary
   const totA={AFIRMATIVO:0,NEGATIVO:0,ABSTENCION:0,AUSENTE:0,total:0};
   const totB={AFIRMATIVO:0,NEGATIVO:0,ABSTENCION:0,AUSENTE:0,total:0};
-  rows.forEach(r=>{
+  blqRows.forEach(r=>{
     VOTE_ORDER.forEach(v=>{totA[v]+=r.cntA[v];totB[v]+=r.cntB[v];});
     totA.total+=r.cntA.total;totB.total+=r.cntB.total;
   });
@@ -2053,11 +2085,23 @@ function runBloqueComparison(){
   document.getElementById('blq-summary').innerHTML=
     `<div class="blq-sum-grid">${sumCard(nameA,totA)}${sumCard(nameB,totB)}</div>`+
     `<div class="blq-divider"></div>`+
-    `<span class="blq-count-badge">${rows.length} actas en com&#250;n</span>`;
+    `<span class="blq-count-badge">${blqRows.length} actas en com&#250;n</span>`;
 
+  const si2=document.getElementById('blq-search-inp');if(si2)si2.value='';
+  document.getElementById('cmp-empty').style.display='none';
+  document.getElementById('cmp-results').style.display='none';
+  document.getElementById('blq-nores').style.display='none';
+  document.getElementById('blq-results').style.display='block';
+  renderBloqueRows();
+}
+
+function renderBloqueRows(){
+  const q=(document.getElementById('blq-search-inp')||{value:''}).value.toLowerCase().trim();
+  const rows=(window._blqRows||[]).filter(r=>!q||(r.acta&&(r.acta[4]||'')).toLowerCase().includes(q));
+  const wrap=document.getElementById('blq-table-wrap');
+  document.getElementById('blq-nores').style.display=rows.length?'none':'block';
   // Render rows
   const MESES_S=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const wrap=document.getElementById('blq-table-wrap');
   wrap.innerHTML='';
   rows.forEach(r=>{
     const a=r.acta;
@@ -2075,10 +2119,7 @@ function runBloqueComparison(){
     wrap.appendChild(div);
   });
 
-  document.getElementById('cmp-empty').style.display='none';
-  document.getElementById('cmp-results').style.display='none';
-  document.getElementById('blq-nores').style.display='none';
-  document.getElementById('blq-results').style.display='block';
+
 }
 
 // Swipe para cerrar en mobile
@@ -2128,6 +2169,9 @@ function runComparison(){
     const a=mapA[id], b=mapB[id];
     return {actaId:+id,acta:a.acta,votoA:a.voto,votoB:b.voto,match:a.voto===b.voto};
   }).sort((x,y)=>{
+    // Acta activa siempre primero
+    if(x.actaId===activeActaId) return -1;
+    if(y.actaId===activeActaId) return 1;
     const da=(x.acta&&x.acta[2])||'',db=(y.acta&&y.acta[2])||'';
     return da<db?1:da>db?-1:0;
   });
@@ -2182,6 +2226,7 @@ function runComparison(){
 
   document.getElementById('cmp-results').style.display='block';
   document.getElementById('cmp-empty').style.display='none';
+  const si=document.getElementById('cmp-search-inp');if(si)si.value='';
   setCmpFilter('all');
 }
 
@@ -2196,9 +2241,11 @@ function setCmpFilter(f){
 function renderCmpRows(){
   const wrap=document.getElementById('cmp-table-wrap');
   const nores=document.getElementById('cmp-nores');
+  const q=(document.getElementById('cmp-search-inp')||{value:''}).value.toLowerCase().trim();
   let rows=cmpRows;
   if(cmpFilter==='agree') rows=rows.filter(r=>r.match);
   if(cmpFilter==='diff')  rows=rows.filter(r=>!r.match);
+  if(q) rows=rows.filter(r=>(r.acta&&(r.acta[4]||'')).toLowerCase().includes(q));
   wrap.innerHTML='';
   nores.style.display=rows.length?'none':'block';
   const MESES_S=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
