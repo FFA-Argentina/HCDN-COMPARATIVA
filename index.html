@@ -426,7 +426,7 @@ body.dark  #cmp-panel{background:#0B1628;border-left:1px solid #1A2B40;box-shado
 #cmp-header{padding:16px 18px 10px;flex-shrink:0;border-bottom:1px solid transparent}
 body.light #cmp-header{border-bottom-color:#EEF2FA}
 body.dark  #cmp-header{border-bottom-color:#152338}
-#cmp-sel-wrap-outer{padding:0 18px 10px;border-bottom:1px solid transparent;flex-shrink:0}
+#cmp-sel-wrap-outer{padding:0 18px 10px;border-bottom:1px solid transparent;flex-shrink:0;position:relative;z-index:30}
 body.light #cmp-sel-wrap-outer{border-bottom-color:#EEF2FA}
 body.dark  #cmp-sel-wrap-outer{border-bottom-color:#152338}
 #cmp-title{font-size:11px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:12px}
@@ -470,7 +470,7 @@ body.dark  #cmp-btn{background:#1A4FAA;color:#D8E4F4}
 body.light #cmp-btn:hover{background:#002880}
 body.dark  #cmp-btn:hover{background:#2460CC}
 #cmp-btn:disabled{opacity:.4;cursor:not-allowed}
-#cmp-body{flex:1;overflow-y:auto;padding:0 0 14px;min-height:0;position:relative}
+#cmp-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 0 14px;min-height:0}
 #cmp-body::-webkit-scrollbar{width:4px}
 body.light #cmp-body::-webkit-scrollbar-thumb{background:#C8D4E6}
 body.dark  #cmp-body::-webkit-scrollbar-thumb{background:#1E3050}
@@ -622,13 +622,19 @@ body.dark  #cmp-open-btn{background:#101F38;color:#7AABFF;border:1px solid #1C2E
 body.light #cmp-open-btn:hover{background:#D8E8FF}
 body.dark  #cmp-open-btn:hover{background:#142040}
 
-/* sticky zones */
+/* sticky zones — hijos directos de cmp-body para que sticky funcione */
 #cmp-sticky,#blq-sticky{
-  position:sticky;top:0;z-index:10;
-  padding-bottom:4px;
+  position:sticky;top:0;z-index:20;
+  padding-bottom:6px;
 }
-body.light #cmp-sticky,body.light #blq-sticky{background:#fff;border-bottom:1px solid #EEF2FA}
-body.dark  #cmp-sticky,body.dark  #blq-sticky{background:#0B1628;border-bottom:1px solid #152338}
+body.light #cmp-sticky,body.light #blq-sticky{
+  background:#fff;border-bottom:1px solid #EEF2FA;
+  box-shadow:0 2px 6px rgba(0,20,80,.06);
+}
+body.dark #cmp-sticky,body.dark #blq-sticky{
+  background:#0B1628;border-bottom:1px solid #152338;
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+}
 #cmp-search-bar,#blq-search-bar{padding:6px 18px 2px}
 #cmp-search-bar .cmp-sel-input,#blq-search-bar .cmp-sel-input{width:100%;font-size:11.5px}
 
@@ -1082,28 +1088,28 @@ body.dark  .ac-item-name{color:#B8CCEC}
       </svg>
       <p>Seleccioná dos diputados o bloques para comparar su historial de votos</p>
     </div>
-    <div id="cmp-results" style="display:none">
-      <div id="cmp-sticky">
-        <div id="cmp-summary"></div>
-        <div id="cmp-filter-bar">
-          <button class="cmp-fbtn cmp-factive" data-f="all" onclick="setCmpFilter('all')">Todas</button>
-          <button class="cmp-fbtn" data-f="agree" onclick="setCmpFilter('agree')">&#10003; Coinciden</button>
-          <button class="cmp-fbtn" data-f="diff" onclick="setCmpFilter('diff')">&#10007; Difieren</button>
-        </div>
-      </div>
+    <div id="cmp-sticky" style="display:none">
+      <div id="cmp-summary"></div>
       <div id="cmp-search-bar">
         <input id="cmp-search-inp" class="cmp-sel-input" placeholder="&#128269; Buscar por t&#237;tulo&#8230;" autocomplete="off" oninput="renderCmpRows()">
       </div>
+      <div id="cmp-filter-bar">
+        <button class="cmp-fbtn cmp-factive" data-f="all" onclick="setCmpFilter('all')">Todas</button>
+        <button class="cmp-fbtn" data-f="agree" onclick="setCmpFilter('agree')">&#10003; Coinciden</button>
+        <button class="cmp-fbtn" data-f="diff" onclick="setCmpFilter('diff')">&#10007; Difieren</button>
+      </div>
+    </div>
+    <div id="cmp-results" style="display:none">
       <div id="cmp-table-wrap"></div>
       <div id="cmp-nores">No hay actas para este filtro</div>
     </div>
-    <div id="blq-results" style="display:none">
-      <div id="blq-sticky">
-        <div id="blq-summary"></div>
-      </div>
+    <div id="blq-sticky" style="display:none">
+      <div id="blq-summary"></div>
       <div id="blq-search-bar">
         <input id="blq-search-inp" class="cmp-sel-input" placeholder="&#128269; Buscar por t&#237;tulo&#8230;" autocomplete="off" oninput="renderBloqueRows()">
       </div>
+    </div>
+    <div id="blq-results" style="display:none">
       <div id="blq-table-wrap"></div>
       <div id="blq-nores" style="display:none;padding:20px;text-align:center;font-size:11px">Sin actas en com&#250;n</div>
     </div>
@@ -1981,6 +1987,8 @@ function setCmpMode(mode){
   document.getElementById('cmp-bloque-form').style.display=mode==='bloque'?'block':'none';
   document.getElementById('cmp-results').style.display='none';
   document.getElementById('blq-results').style.display='none';
+  document.getElementById('cmp-sticky').style.display='none';
+  document.getElementById('blq-sticky').style.display='none';
   document.getElementById('cmp-empty').style.display='flex';
   if(mode==='bloque') setupBloqueAC();
 }
@@ -2128,6 +2136,8 @@ function runBloqueComparison(){
   const si2=document.getElementById('blq-search-inp');if(si2)si2.value='';
   document.getElementById('cmp-empty').style.display='none';
   document.getElementById('cmp-results').style.display='none';
+  document.getElementById('cmp-sticky').style.display='none';
+  document.getElementById('blq-sticky').style.display='block';
   document.getElementById('blq-nores').style.display='none';
   document.getElementById('blq-results').style.display='block';
   renderBloqueRows();
@@ -2255,6 +2265,7 @@ function runComparison(){
     </div>
   `;
 
+  document.getElementById('cmp-sticky').style.display='block';
   document.getElementById('cmp-results').style.display='block';
   document.getElementById('cmp-empty').style.display='none';
   const si=document.getElementById('cmp-search-inp');if(si)si.value='';
