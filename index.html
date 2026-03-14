@@ -70,6 +70,14 @@ body.dark  #sidebar{background:#0B1628;border-right:1px solid #1A2B40}
 
 #sidebar-header{padding:12px 14px 8px;flex-shrink:0}
 #sidebar-title{font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+#cmp-open-btn-mob{display:none;align-items:center;gap:5px;padding:5px 10px;border-radius:6px;
+  font-size:10px;font-weight:700;letter-spacing:.4px;cursor:pointer;flex-shrink:0;
+  transition:background .13s;border:none}
+body.light #cmp-open-btn-mob{background:#EEF2FA;color:#003AAA;border:1px solid #C0D0E4}
+body.dark  #cmp-open-btn-mob{background:#101F38;color:#7AABFF;border:1px solid #1C2E48}
+body.light #cmp-open-btn-mob:hover{background:#D8E8FF}
+body.dark  #cmp-open-btn-mob:hover{background:#142040}
+@media(max-width:720px){#cmp-open-btn-mob{display:flex}}
 body.light #sidebar-title{color:#003AAA}
 body.dark  #sidebar-title{color:#5A8EE0}
 
@@ -418,6 +426,9 @@ body.dark  #cmp-panel{background:#0B1628;border-left:1px solid #1A2B40;box-shado
 #cmp-header{padding:16px 18px 10px;flex-shrink:0;border-bottom:1px solid transparent}
 body.light #cmp-header{border-bottom-color:#EEF2FA}
 body.dark  #cmp-header{border-bottom-color:#152338}
+#cmp-sel-wrap-outer{padding:0 18px 10px;border-bottom:1px solid transparent;flex-shrink:0}
+body.light #cmp-sel-wrap-outer{border-bottom-color:#EEF2FA}
+body.dark  #cmp-sel-wrap-outer{border-bottom-color:#152338}
 #cmp-title{font-size:11px;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:12px}
 body.light #cmp-title{color:#003AAA}
 body.dark  #cmp-title{color:#5A8EE0}
@@ -630,8 +641,8 @@ body.dark  #cmp-sticky,body.dark  #blq-sticky{background:#0B1628;border-bottom:1
   #cmp-panel.open{transform:translateY(0)!important}
   /* evitar zoom en inputs dentro del panel en iOS */
   #cmp-panel input,#cmp-panel select{font-size:16px!important}
-  /* botón comparar: va al final del header (después del toggle) */
-  #cmp-open-btn{order:10;margin-left:2px}
+  /* botón comparar: oculto en header en mobile (aparece en sidebar) */
+  #cmp-open-btn{display:none}
 }
 
 /* ── ZOOM CONTROL ────────────────────────────────────────── */
@@ -762,12 +773,21 @@ body.dark  .ac-item-name{color:#B8CCEC}
   <!-- ── SIDEBAR ─────────────────────────────────── -->
   <nav id="sidebar">
     <div id="sidebar-header">
-      <div id="sidebar-title">
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="vertical-align:middle;margin-right:5px">
-          <rect x=".7" y=".7" width="8.6" height="8.6" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
-          <path d="M2.5 3.5h5M2.5 5h3.5M2.5 6.5h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
-        </svg>
-        Índice de Votaciones
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0">
+        <div id="sidebar-title" style="margin-bottom:0">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="vertical-align:middle;margin-right:5px">
+            <rect x=".7" y=".7" width="8.6" height="8.6" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="none"/>
+            <path d="M2.5 3.5h5M2.5 5h3.5M2.5 6.5h4" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+          </svg>
+          Índice de Votaciones
+        </div>
+        <button id="cmp-open-btn-mob" onclick="openCmp();closeSidebar()" title="Comparar">
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
+            <circle cx="4" cy="5.5" r="4" fill="#16a34a"/>
+            <circle cx="12" cy="5.5" r="4" fill="#dc2626"/>
+          </svg>
+          Comparar
+        </button>
       </div>
 
       <!-- Search type tabs -->
@@ -1004,40 +1024,42 @@ body.dark  .ac-item-name{color:#B8CCEC}
         <span id="cmp-mode-lbl-blq" class="cmp-mode-lbl cmp-mode-lbl-right">Bloques</span>
       </div>
     </div>
-    <div id="cmp-dip-form">
-      <div class="cmp-sel-row">
-        <span class="cmp-sel-lbl a">A</span>
-        <div class="cmp-sel-wrap">
-          <input id="cmp-inp-a" class="cmp-sel-input" placeholder="Diputado/a A&hellip;" autocomplete="off"/>
-          <div class="cmp-ac-list" id="cmp-ac-a"></div>
-        </div>
-      </div>
-      <div class="cmp-sel-row">
-        <span class="cmp-sel-lbl b">B</span>
-        <div class="cmp-sel-wrap">
-          <input id="cmp-inp-b" class="cmp-sel-input" placeholder="Diputado/a B&hellip;" autocomplete="off"/>
-          <div class="cmp-ac-list" id="cmp-ac-b"></div>
-        </div>
-      </div>
-      <button id="cmp-btn" onclick="runComparison()" disabled>Comparar votaciones</button>
-    </div>
-    <div id="cmp-bloque-form" style="display:none">
-      <div class="cmp-sel-row">
-        <span class="cmp-sel-lbl a">A</span>
-        <select id="cmp-blq-a" class="cmp-sel-input cmp-blq-select">
-          <option value="">-- Seleccion&#225; un bloque --</option>
-        </select>
-      </div>
-      <div class="cmp-sel-row">
-        <span class="cmp-sel-lbl b">B</span>
-        <select id="cmp-blq-b" class="cmp-sel-input cmp-blq-select">
-          <option value="">-- Seleccion&#225; un bloque --</option>
-        </select>
-      </div>
-      <button id="cmp-blq-btn" onclick="runBloqueComparison()" disabled>Comparar bloques</button>
-    </div>
   </div>
   <div id="cmp-body">
+    <div id="cmp-sel-wrap-outer">
+      <div id="cmp-dip-form">
+        <div class="cmp-sel-row">
+          <span class="cmp-sel-lbl a">A</span>
+          <div class="cmp-sel-wrap">
+            <input id="cmp-inp-a" class="cmp-sel-input" placeholder="Diputado/a A&hellip;" autocomplete="off"/>
+            <div class="cmp-ac-list" id="cmp-ac-a"></div>
+          </div>
+        </div>
+        <div class="cmp-sel-row">
+          <span class="cmp-sel-lbl b">B</span>
+          <div class="cmp-sel-wrap">
+            <input id="cmp-inp-b" class="cmp-sel-input" placeholder="Diputado/a B&hellip;" autocomplete="off"/>
+            <div class="cmp-ac-list" id="cmp-ac-b"></div>
+          </div>
+        </div>
+        <button id="cmp-btn" onclick="runComparison()" disabled>Comparar votaciones</button>
+      </div>
+      <div id="cmp-bloque-form" style="display:none">
+        <div class="cmp-sel-row">
+          <span class="cmp-sel-lbl a">A</span>
+          <select id="cmp-blq-a" class="cmp-sel-input cmp-blq-select">
+            <option value="">-- Seleccion&#225; un bloque --</option>
+          </select>
+        </div>
+        <div class="cmp-sel-row">
+          <span class="cmp-sel-lbl b">B</span>
+          <select id="cmp-blq-b" class="cmp-sel-input cmp-blq-select">
+            <option value="">-- Seleccion&#225; un bloque --</option>
+          </select>
+        </div>
+        <button id="cmp-blq-btn" onclick="runBloqueComparison()" disabled>Comparar bloques</button>
+      </div>
+    </div>
     <div id="cmp-empty">
       <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
         <circle cx="12" cy="20" r="8" stroke="currentColor" stroke-width="1.3" fill="none" stroke-dasharray="3 2"/>
